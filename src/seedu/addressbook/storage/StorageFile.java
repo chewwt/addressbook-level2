@@ -97,6 +97,9 @@ public class StorageFile {
             marshaller.marshal(toSave, fileWriter);
 
         } catch (IOException ioe) {
+        	if (!isFilePresent()){
+                throw new StorageOperationException("File not found: " + path);
+        	}
             throw new StorageOperationException("Error writing to file: " + path);
         } catch (JAXBException jaxbe) {
             throw new StorageOperationException("Error converting address book into storage format");
@@ -133,6 +136,9 @@ public class StorageFile {
 
         // other errors
         } catch (IOException ioe) {
+        	if (!isFilePresent()){
+                throw new StorageOperationException("File not found: " + path);
+        	}        	
             throw new StorageOperationException("Error writing to file: " + path);
         } catch (JAXBException jaxbe) {
             throw new StorageOperationException("Error parsing file data format");
@@ -143,6 +149,10 @@ public class StorageFile {
 
     public String getPath() {
         return path.toString();
+    }
+    
+    public boolean isFilePresent(){
+    	return (new File(getPath()).isFile());
     }
 
 }
