@@ -37,24 +37,9 @@ public interface ReadOnlyPerson {
      */
     default String getAsTextShowAll() {
         final StringBuilder builder = new StringBuilder();
-        final String detailIsPrivate = "(private) ";
-        builder.append(getName())
-                .append(" Phone: ");
-        if (getPhone().isPrivate()) {
-            builder.append(detailIsPrivate);
-        }
-        builder.append(getPhone())
-                .append(" Email: ");
-        if (getEmail().isPrivate()) {
-            builder.append(detailIsPrivate);
-        }
-        builder.append(getEmail())
-                .append(" Address: ");
-        if (getAddress().isPrivate()) {
-            builder.append(detailIsPrivate);
-        }
-        builder.append(getAddress())
-                .append(" Tags: ");
+    	String str = getPrintableString(getName(), getPhone(), getEmail(), getAddress());
+    	builder.append(str);
+        builder.append("Tags: ");
         for (Tag tag : getTags()) {
             builder.append(tag);
         }
@@ -66,20 +51,31 @@ public interface ReadOnlyPerson {
      */
     default String getAsTextHidePrivate() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getName());
+        builder.append(getName().getPrintableString()).append(" ");
         if (!getPhone().isPrivate()) {
-            builder.append(" Phone: ").append(getPhone());
+            builder.append(getPhone().getPrintableString()).append(" ");
         }
         if (!getEmail().isPrivate()) {
-            builder.append(" Email: ").append(getEmail());
+            builder.append(getEmail().getPrintableString()).append(" ");
         }
         if (!getAddress().isPrivate()) {
-            builder.append(" Address: ").append(getAddress());
+            builder.append(getAddress().getPrintableString()).append(" ");
         }
-        builder.append(" Tags: ");
+        builder.append("Tags: ");
         for (Tag tag : getTags()) {
             builder.append(tag);
         }
         return builder.toString();
     }
+    
+    /**
+     * Returns a concatenated version of the printable strings of each object.
+     */
+    default String getPrintableString(Printable... printables){
+    	String str = "";
+        for (Printable p : printables) {
+        	str += p.getPrintableString() + " ";
+        }
+        return str;
+    }    
 }
