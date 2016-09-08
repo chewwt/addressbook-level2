@@ -1,59 +1,67 @@
 package seedu.addressbook.common;
 
+import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import java.util.ArrayList;
 
 public class UtilsTest {
+    private Object[] list_noNull, list_oneNull, list_someNull;
+    private ArrayList<Object> arrayList_noDuplicate = new ArrayList<Object>();
+    private ArrayList<Object> arrayList_oneDuplicate = new ArrayList<Object>();
+    private ArrayList<Object> arrayList_someDuplicates = new ArrayList<Object>();
+    
+    @Before
+    public void setupLists() {
+        this.list_noNull = new Object[]{"hello", "world"};
+        this.list_oneNull = new Object[]{"hello",null};
+        this.list_someNull = new Object[]{"hello", "world", null, null};
+        
+        this.arrayList_noDuplicate.add("hello");
+        this.arrayList_noDuplicate.add("hi");
+        this.arrayList_noDuplicate.add("apple");
+        
+        this.arrayList_oneDuplicate.add("hello");
+        this.arrayList_oneDuplicate.add("hi");
+        this.arrayList_oneDuplicate.add("hello");
+        
+        this.arrayList_someDuplicates.add("hello");
+        this.arrayList_someDuplicates.add("hi");
+        this.arrayList_someDuplicates.add("hello");
+        this.arrayList_someDuplicates.add("apple");
+        this.arrayList_someDuplicates.add("apple");
+        this.arrayList_someDuplicates.add("banana");
+        this.arrayList_someDuplicates.add("coconut");
+    }    
 
 	@Test
 	public void isAnyNull_noNull_returnsFalse() {
-		final Object[] inputs = { "hello", new Integer(53) };
-		assertFalse(Utils.isAnyNull(inputs));
+		assertFalse(Utils.isAnyNull(list_noNull));
 	}
 
 	@Test
 	public void isAnyNull_singleNull_returnsTrue() {
-		final Object[] inputs = { null };
-		assertTrue(Utils.isAnyNull(inputs));
+		assertTrue(Utils.isAnyNull(list_oneNull));
 	}
 
 	@Test
 	public void isAnyNull_someNull_returnsTrue() {
-		final Object[] inputs = { "hello", new Integer(53), null };
-		assertTrue(Utils.isAnyNull(inputs));
+		assertTrue(Utils.isAnyNull(list_someNull));
 	}
 
 	@Test
 	public void elementsAreUnique_allUnique_returnsTrue() {
-		final ArrayList<Object> inputs = new ArrayList<Object>();
-		inputs.add("hello");
-		inputs.add(new Integer(234));
-		inputs.add("a");
-		assertTrue(Utils.elementsAreUnique(inputs));
+		assertTrue(Utils.elementsAreUnique(arrayList_noDuplicate));
 	}
 
 	@Test
 	public void elementsAreUnique_oneRepeat_returnsFalse() {
-		final ArrayList<Object> inputs = new ArrayList<Object>();
-		inputs.add("hello");
-		inputs.add(new Integer(234));
-		inputs.add("hello");
-		assertFalse(Utils.elementsAreUnique(inputs));
+		assertFalse(Utils.elementsAreUnique(arrayList_oneDuplicate));
 	}
 
 	@Test
 	public void elementsAreUnique_fewRepeats_returnsFalse() {
-		final ArrayList<Object> inputs = new ArrayList<Object>();
-		inputs.add("hello");
-		inputs.add(new Integer(234));
-		inputs.add("hello");
-		inputs.add("a");
-		inputs.add("hello");
-		inputs.add("a");
-		inputs.add("b");
-		assertFalse(Utils.elementsAreUnique(inputs));
+		assertFalse(Utils.elementsAreUnique(arrayList_someDuplicates));
 	}
 }
